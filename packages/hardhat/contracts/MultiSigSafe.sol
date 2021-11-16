@@ -3,6 +3,10 @@
 pragma solidity >=0.8.0 <0.9.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/// @title A Multi Sig Safe Contract
+/// @notice Implements a multi signature safe. Users are added to the safe when it is initialized. The number of required signatures is also set at that time.
+/// In order to send funds from the safe, a user must create a transaction which must by signed by the required number before it is executed. The user that 
+/// created the trasnaction can't sign it. 
 contract MultiSigSafe is Ownable {
     //mapping to determine if an address is an owner aker 1/0
     mapping(address => bool) private safeUsers;
@@ -30,15 +34,39 @@ contract MultiSigSafe is Ownable {
         _;
     }
 
+    /// @notice An event that is emitted when a user is added to the safe.
+    /// @param user The address of the added user.
     event SafeUserAdded(address indexed user);
-    //event SafeUserRemoved(address indexed user);
+
+    /// @notice An event that is emitted when funds are deposited into the safe.
+    /// @param from The address of the . 
+    /// @param amount The amount deposited.
+    /// @param balance The safe's balance
     event DepositFunds(address from, uint256 amount, uint256 balance);
-    event WithdrawFunds(address from, uint256 amount);
-    event TransferFunds(address from, address to, uint256 amount);
+
+    /// @notice An event that is emitted when a transaction is created. 
+    /// @param by The address of the user creating the transaction.
+    /// @param to The address of the user who will receive the ETH if the transaction is completed.
+    /// @param amount The amount of ETH that will be transfered from the safe to the recepient if the transaction is completed.
+    /// @param transactionId The transaction Id.
     event TransactionCreated(address by, address to, uint256 amount, uint256 transactionId);
+
+    /// @notice An event that us emitted when a trasnaction is sigend.
+    /// @param by The address of the user who signed the transaction.
+    /// @param transactionId The transaction Id.
     event TransactionSigned(address by, uint256 transactionId);
+
+    /// @notice
+    /// @param from The address of the user that created the transaction.
+    /// @param to The address of the recepient.
+    /// @param amount The amount sent to the recepient.
+    /// @param transactionId The transaction Id.
     event TransactionCompleted(address from, address to, uint256 amount, uint256 transactionId);
 
+    /// @notice Creates an instance of the multi sig safe. Assigns the users to the safe and sets the number of signatures required to complete a trasnaction. 
+    /// The constructor is payable so ETH can be sent to fund the safe.
+    /// @param _safeUsers A list of user addresses to be added to the safe. Those will be considered the ownders of the safe.
+    /// @param _sigsRequired The number of signatures required to complete a trasnaction.
     constructor(address[] memory _safeUsers, uint _sigsRequired) payable {
         require(_sigsRequired > 0, "Number of signatures required must be > 0");
         require(_sigsRequired <= _safeUsers.length, "Number of signatures required must be less than or equal to the number of owners");
@@ -50,20 +78,27 @@ contract MultiSigSafe is Ownable {
             safeUsers[_newUser] = true;
             emit SafeUserAdded(_newUser);
         }
+        emit DepositFunds(msg.sender, msg.value, address(this).balance);
     }
 
+    /// @notice Returns the number of signatures required to complete a transaction. 
     function getNumberOfSigsRequired() validUser public view returns (uint256) {
         return minSigsRequired;
     }
 
+    /// @notice Returns a list pending transaction Id's
     function getPendingTransactions() validUser public view returns (uint256[] memory) {
         return pendingTransactions;
     }
 
+    /// @notice Receives ETH
     receive() payable external {
         emit DepositFunds(msg.sender, msg.value, address(this).balance);
     }
 
+    /// @notice Creates a trasanction and populates its fields. The transaction will need to be signed by the required number of signatures for it to be completed.
+    /// @param to The address of the recepient.
+    /// @param amount The amoount of ETH to be sent to the recepient.
     function transferTo(address payable to, uint amount) validUser public {
         //make sure the balance is >= the amount of the transaction
         require(address(this).balance >= amount);
@@ -80,6 +115,8 @@ contract MultiSigSafe is Ownable {
         emit TransactionCreated(msg.sender, to, amount, txnId);
     }
 
+    /// @notice Signs a trasanction. If the number of required signatures is reached, the trasanction is executed and marked as complete.
+    /// @param txnId The Id of the transaction to be signed.
     function signTransaction(uint txnId) validUser public {
         Transaction storage txn = transactions[txnId];
         require(address(0) != txn.from, "Transaction does not exit");
