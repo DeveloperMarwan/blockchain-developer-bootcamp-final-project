@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity >=0.8.0 <0.9.0;
-
-import "hardhat/console.sol";
+pragma solidity 0.8.4;
 import "./MultiSigSafe.sol";
 
 /// @title A Staking Contract
@@ -66,7 +64,7 @@ contract Staker {
     function execute() public deadlinePassed notCompleted {
         stakingCompleted = true;
         if (address(this).balance >= threshold) {
-            multiSigSafe = (new MultiSigSafe){value : address(this).balance}(stakersList, stakersList.length);
+            multiSigSafe = (new MultiSigSafe){value : address(this).balance}(stakersList, stakersList.length > 1 ? stakersList.length - 1 : 1);
             multiSigSafeInit = true;
             emit MultiSigSafeCreated(address(multiSigSafe));
         } else {
