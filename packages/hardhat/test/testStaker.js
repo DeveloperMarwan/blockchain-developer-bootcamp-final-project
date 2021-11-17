@@ -12,7 +12,8 @@ describe("Staker contract", function () {
     beforeEach(async function () {
         [staker_1, staker_2, staker_3, ...addrs] = await ethers.getSigners();
         Staker = await ethers.getContractFactory("Staker");
-        staker = await Staker.deploy();
+        //set the threshold to 1 ETH and duration to 30 seconds
+        staker = await Staker.deploy(ethers.utils.parseEther("1.0"), 30);
         provider = waffle.provider;
     });
 

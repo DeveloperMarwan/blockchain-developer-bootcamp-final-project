@@ -16,13 +16,13 @@ contract Staker {
     address[] private stakersList;
     
     /// @notice The deadline to reach the staking ETH threshold. The execute method can't be called before the deadline passes.
-    uint256 public deadline = block.timestamp + 30 seconds;
+    uint256 public deadline;
     
     /// @notice A flag that is set to true if the deadline passes and the staking threshold is not reached. 
     bool public openForWithdraw;
     
     /// @notice The staking threshold amount
-    uint256 public constant threshold = 1 ether;
+     uint256 public threshold;
     
     /// @notice A flag that is set to true when the execute method is called. It is used to preven calling the execute mehtod more that one time.
     bool public stakingCompleted;
@@ -47,6 +47,16 @@ contract Staker {
     modifier notCompleted() {
         require(stakingCompleted == false, 'Contract completed');
         _;
+    }
+
+    /// @notice: The contract's constructor.
+    /// @param _threshold The amount of ETH that needs to be staked to execute the contract. The amount must be passed in WEI.
+    /// @param _duration How long will the staking be open. Must be passed in seconds.
+    constructor(uint256 _threshold, uint256 _duration) {
+        require(_threshold > 0, "Threshold value must be greater than zero");
+        require(_duration > 0, "Duration value must be greater than zero");
+        threshold = _threshold;
+        deadline = block.timestamp + _duration;
     }
     
     /// @notice Stake ETH. The amount staked will be added to the user's balance. Also, the user will be added to the stakers list. This method 
