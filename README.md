@@ -11,3 +11,36 @@ Use Case:
 - If consensus is reached, the purchase is made.
 - The DAO will have the option to sell the NFT and then distribute the proceeds of the sale back to the members.
 
+Prerequisites: [Node](https://nodejs.org/en/download/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/) and [Git](https://git-scm.com/downloads)
+
+> clone the final project repository:
+
+```bash
+git clone https://github.com/DeveloperMarwan/blockchain-developer-bootcamp-final-project.git
+cd blockchain-developer-bootcamp-final-project
+git checkout main
+```
+
+> install and start the‍ Hardhat chain:
+
+```bash
+yarn install
+yarn chain
+```
+
+> in a second terminal window, start the frontend:
+
+```bash
+cd blockchain-developer-bootcamp-final-project
+yarn start
+```
+
+> in a third terminal window, deploy the contract:
+
+```bash
+cd blockchain-developer-bootcamp-final-project
+yarn deploy
+```
+
+
+

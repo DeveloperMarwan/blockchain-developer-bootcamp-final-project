@@ -3,10 +3,11 @@
 pragma solidity 0.8.4;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-/// @title A Multi Sig Safe Contract
-/// @notice Implements a multi signature safe. Users are added to the safe when it is initialized. The number of required signatures is also set at that time.
-/// In order to send funds from the safe, a user must create a transaction which must by signed by the required number before it is executed. The user that 
-/// created the trasnaction can't sign it. 
+/**  @title A Multi Sig Safe Contract
+     @notice Implements a multi signature safe. Users are added to the safe when it is initialized. The number of required signatures is also set at that time.
+     In order to send funds from the safe, a user must create a transaction which must by signed by the required number before it is executed. The user that 
+     created the trasnaction can't sign it. 
+*/
 contract MultiSigSafe is Ownable {
     //mapping to determine if an address is an owner aker 1/0
     mapping(address => bool) private safeUsers;
@@ -63,10 +64,11 @@ contract MultiSigSafe is Ownable {
     /// @param transactionId The transaction Id.
     event TransactionCompleted(address from, address to, uint256 amount, uint256 transactionId);
 
-    /// @notice Creates an instance of the multi sig safe. Assigns the users to the safe and sets the number of signatures required to complete a trasnaction. 
-    /// The constructor is payable so ETH can be sent to fund the safe.
-    /// @param _safeUsers A list of user addresses to be added to the safe. Those will be considered the ownders of the safe.
-    /// @param _sigsRequired The number of signatures required to complete a trasnaction.
+    /** @notice Creates an instance of the multi sig safe. Assigns the users to the safe and sets the number of signatures required to complete a trasnaction. 
+        The constructor is payable so ETH can be sent to fund the safe.
+        @param _safeUsers A list of user addresses to be added to the safe. Those will be considered the ownders of the safe.
+        @param _sigsRequired The number of signatures required to complete a trasnaction.
+    */
     constructor(address[] memory _safeUsers, uint _sigsRequired) payable {
         require(_sigsRequired > 0, "Number of signatures required must be > 0");
         require(_sigsRequired <= _safeUsers.length, "Number of signatures required must be less than or equal to the number of owners");

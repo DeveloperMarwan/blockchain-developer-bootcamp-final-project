@@ -3,10 +3,11 @@
 pragma solidity 0.8.4;
 import "./MultiSigSafe.sol";
 
-/// @title A Staking Contract
-/// @notice This contract allows a group of users to stake ETH within a specific period of time. If a predetermined threshold amount
-/// is reached, the contract will be executed and the staked balace will be transfered to a multi sig safe. If the threshold amount 
-/// is not reached, the users can withdrw the ETH they staked.
+/** @title A Staking Contract
+    @notice This contract allows a group of users to stake ETH within a specific period of time. If a predetermined threshold amount
+    is reached, the contract will be executed and the staked balace will be transfered to a multi sig safe. If the threshold amount 
+    is not reached, the users can withdrw the ETH they staked.
+*/
 contract Staker {
     /// @notice The instance of the multi sig safe. It will be initialized if the staking threshold amount is reached.
     MultiSigSafe public multiSigSafe;
@@ -49,9 +50,10 @@ contract Staker {
         _;
     }
 
-    /// @notice: The contract's constructor.
-    /// @param _threshold The amount of ETH that needs to be staked to execute the contract. The amount must be passed in WEI.
-    /// @param _duration How long will the staking be open. Must be passed in seconds.
+    /** @notice The contract's constructor.
+        @param _threshold The amount of ETH that needs to be staked to execute the contract. The amount must be passed in WEI.
+        @param _duration How long will the staking be open. Must be passed in seconds.
+    */
     constructor(uint256 _threshold, uint256 _duration) {
         require(_threshold > 0, "Threshold value must be greater than zero");
         require(_duration > 0, "Duration value must be greater than zero");
