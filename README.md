@@ -1,15 +1,16 @@
 # blockchain-developer-bootcamp-final-project
 
 ## Project Idea: 
-Create a NFT DAO.
+Create a staking DAO.
 
 ## Use Case:
 - A deadline is established for members of the DAO to stake ETH.
+- A threshold ETH amount is set.
 - If the threshold ETH amount is not collected by the deadline, members will be allowed to withdraw funds that they put in.
-- If a certain threshold value of ETH is reached by the deadline, staking will be considered complete and the full balance of ETH is sent to a "safe".
-- Members will be allowed to propse purchasing a NFT (from OpenSea for example).
-- If consensus is reached, the purchase is made.
-- The DAO will have the option to sell the NFT and then distribute the proceeds of the sale back to the members.
+- If the threshold value of ETH is reached by the deadline, staking will be considered complete and the full balance of ETH is sent to a multi-sig safe. 
+- The multi-sig safe is created after the staking is completed. The safe is initialized with the blaance staked and the staking accounts. The required number of signatures is set to the number of owner minus one.
+- Members will be allowed to propse transactions to send ETH to an address.
+- If the required number of signatures o=is achieved the ETH is transfered.
 
 ## Installation and Setup:
 > Prerequisites: [Node](https://nodejs.org/en/download/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/) and [Git](https://git-scm.com/downloads)
@@ -60,7 +61,7 @@ yarn test
 > 2. Enter the relevant information for the target test netowrk in .env
 
 ## Frontend Project:
-(put the URL of the fronend here)
+https://developermarwan-bootcamp.surge.sh/ 
 
 ## Public Ethereum Account:
 developermarwan.eth

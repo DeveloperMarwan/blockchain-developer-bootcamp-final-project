@@ -34,8 +34,8 @@ const { ethers } = require("ethers");
 const humanizeDuration = require("humanize-duration");
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
-//const targetNetwork = NETWORKS.ropsten;
+//const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS.ropsten;
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -43,21 +43,12 @@ const NETWORKCHECK = true;
 
 // 🛰 providers
 if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
-// const mainnetProvider = getDefaultProvider("mainnet", { infura: INFURA_ID, etherscan: ETHERSCAN_KEY, quorum: 1 });
-// const mainnetProvider = new InfuraProvider("mainnet",INFURA_ID);
-//
 // attempt to connect to our own scaffold eth rpc and if that fails fall back to infura...
 // Using StaticJsonRpcProvider as the chainId won't change see https://github.com/ethers-io/ethers.js/issues/901
 const scaffoldEthProvider = navigator.onLine
   ? new ethers.providers.StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544")
   : null;
 const poktMainnetProvider = null;
-// const poktMainnetProvider = navigator.onLine
-//   ? new ethers.providers.StaticJsonRpcProvider(
-//       //"https://eth-mainnet.gateway.pokt.network/v1/lb/61853c567335c80036054a2b",
-//       "https://eth-mainnet.gateway.pokt.network/v1/lb/618d09613853830035c762ae",
-//     )
-//   : null;
 const mainnetInfura = navigator.onLine
   ? new ethers.providers.StaticJsonRpcProvider(`https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`)
   : null;
@@ -80,10 +71,6 @@ const walletLink = new WalletLink({
 // WalletLink provider
 const walletLinkProvider = walletLink.makeWeb3Provider(`https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`, 1);
 
-// Portis ID: 6255fb2b-58c8-433b-a2c9-62098c05ddc9
-/*
-  Web3 modal helps us "connect" external wallets:
-*/
 const web3Modal = new Web3Modal({
   network: "mainnet", // Optional. If using WalletConnect on xDai, change network to "xdai" and add RPC info below for xDai chain.
   cacheProvider: true, // optional
@@ -219,11 +206,6 @@ function App(props) {
   const myMainnetDAIBalance = useContractReader(mainnetContracts, "DAI", "balanceOf", [
     "0x34aA3F359A9D614239015126635CE7732c18fDF3",
   ]);
-
-  /*
-  const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
-  console.log("🏷 Resolved austingriffith.eth as:",addressFromENS)
-  */
 
   //
   // 🧫 DEBUG 👨🏻‍🔬
@@ -410,10 +392,6 @@ function App(props) {
     );
   }
 
-  //keep track of contract balance to know how much has been staked total:
-  // const stakerContractBalance = useBalance(localProvider, readContracts && readContracts.Staker.address);
-  // if (DEBUG) console.log("💵 stakerContractBalance", stakerContractBalance);
-
   //keep track of total 'threshold' needed of ETH
   const threshold = useContractReader(readContracts, "Staker", "threshold");
   console.log("💵 threshold:", threshold);
@@ -445,14 +423,12 @@ function App(props) {
   const [stakeAmount, setStakeAmount] = useState();
   const [staking, setStaking] = useState();
 
-  console.log("At step 1");
-
   let completeDisplay = "";
   if (stakingCompleted) {
     if (isMultiSigSafeInit) {
       completeDisplay = (
         <div style={{ padding: 16, backgroundColor: "#eeffef", fontWeight: "bolder" }}>
-          🎉🎉🎉 -- Staking Executed -- Threshold Reached -- Multi Sig Safe Created with Balance -- 🎉🎉🎉
+          -- Staking Executed -- Threshold Reached -- Multi Sig Safe Created with Balance --
         </div>
       );
     } else {
@@ -463,7 +439,6 @@ function App(props) {
       );
     }
   }
-  console.log("At step 2", completeDisplay);
 
   let multiSigSafeDisplay = "";
   if (isMultiSigSafeInit) {
@@ -474,10 +449,10 @@ function App(props) {
         signer={userSigner}
         provider={injectedProvider}
         price={price}
+        blockExplorer={blockExplorer}
       />
     );
   }
-  console.log("At step 3", multiSigSafeDisplay);
 
   return (
     <div className="App">
@@ -506,6 +481,7 @@ function App(props) {
               MultiSigSafe
             </Link>
           </Menu.Item>
+          {/* 
           <Menu.Item key="/stakerDebug">
             <Link
               onClick={() => {
@@ -516,6 +492,7 @@ function App(props) {
               Staker - Debugger
             </Link>
           </Menu.Item>
+          */}
         </Menu>
         <Switch>
           <Route exact path="/">
@@ -596,7 +573,13 @@ function App(props) {
                 renderItem={item => {
                   return (
                     <List.Item key={item[0] + item[1] + item.blockNumber}>
-                      <Address value={item[0]} ensProvider={mainnetProvider} fontSize={16} /> =&gt;
+                      <Address
+                        value={item[0]}
+                        ensProvider={mainnetProvider}
+                        fontSize={16}
+                        blockExplorer={blockExplorer}
+                      />{" "}
+                      =&gt;
                       <Balance balance={item[1]} />
                     </List.Item>
                   );
@@ -605,6 +588,7 @@ function App(props) {
             </div>
           </Route>
           <Route path="/multisigsafe">{multiSigSafeDisplay}</Route>
+          {/* 
           <Route path="/stakerDebug">
             <Contract
               name="Staker"
@@ -616,6 +600,7 @@ function App(props) {
               contractConfig={contractConfig}
             />
           </Route>
+          */}
         </Switch>
       </BrowserRouter>
 
