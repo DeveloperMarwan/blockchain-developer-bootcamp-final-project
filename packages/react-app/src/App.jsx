@@ -21,7 +21,8 @@ import Web3Modal from "web3modal";
 import "./App.css";
 import { useEventListener } from "./hooks";
 import { Account, Contract, Faucet, GasGauge, Header, Ramp, ThemeSwitch, Address, Balance, Events } from "./components";
-import { INFURA_ID, NETWORK, NETWORKS, ALCHEMY_KEY, MULTI_SIG_SAFE_ABI } from "./constants";
+//import { INFURA_ID, NETWORK, NETWORKS, ALCHEMY_KEY, MULTI_SIG_SAFE_ABI } from "./constants";
+import { NETWORK, NETWORKS, MULTI_SIG_SAFE_ABI } from "./constants";
 import externalContracts from "./contracts/external_contracts";
 // contracts
 import deployedContracts from "./contracts/hardhat_contracts.json";
@@ -34,8 +35,8 @@ const { ethers } = require("ethers");
 const humanizeDuration = require("humanize-duration");
 
 /// 📡 What chain are your contracts deployed to?
-//const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
-const targetNetwork = NETWORKS.ropsten;
+const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+//const targetNetwork = NETWORKS.ropsten;
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -49,8 +50,9 @@ const scaffoldEthProvider = navigator.onLine
   ? new ethers.providers.StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544")
   : null;
 const poktMainnetProvider = null;
+//https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}
 const mainnetInfura = navigator.onLine
-  ? new ethers.providers.StaticJsonRpcProvider(`https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`)
+  ? new ethers.providers.StaticJsonRpcProvider(`https://mainnet.infura.io/v3/` + process.env.REACT_APP_INFURAID)
   : null;
 // ( ⚠️ Getting "failed to meet quorum" errors? Check your INFURA_ID
 // 🏠 Your local provider is usually pointed at your local blockchain
@@ -69,7 +71,7 @@ const walletLink = new WalletLink({
 });
 
 // WalletLink provider
-const walletLinkProvider = walletLink.makeWeb3Provider(`https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`, 1);
+const walletLinkProvider = walletLink.makeWeb3Provider(`https://mainnet.infura.io/v3/` + process.env.REACT_APP_INFURAID, 1); //`https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`
 
 const web3Modal = new Web3Modal({
   network: "mainnet", // Optional. If using WalletConnect on xDai, change network to "xdai" and add RPC info below for xDai chain.
@@ -80,10 +82,10 @@ const web3Modal = new Web3Modal({
       package: WalletConnectProvider, // required
       options: {
         bridge: "https://polygon.bridge.walletconnect.org",
-        infuraId: INFURA_ID,
+        infuraId: process.env.REACT_APP_INFURAID,
         rpc: {
-          1: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`, // mainnet // For more WalletConnect providers: https://docs.walletconnect.org/quick-start/dapps/web3-provider#required
-          42: `https://kovan.infura.io/v3/${INFURA_ID}`,
+          1: `https://mainnet.infura.io/v3/` + process.env.REACT_APP_INFURAID, // mainnet // For more WalletConnect providers: https://docs.walletconnect.org/quick-start/dapps/web3-provider#required `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`
+          42: `https://kovan.infura.io/v3/${process.env.REACT_APP_INFURAID}`,
           100: "https://dai.poa.network", // xDai
         },
       },

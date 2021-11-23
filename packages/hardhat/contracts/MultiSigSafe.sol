@@ -103,7 +103,7 @@ contract MultiSigSafe is Ownable {
     /// @param amount The amoount of ETH to be sent to the recepient.
     function transferTo(address payable to, uint amount) validUser public {
         //make sure the balance is >= the amount of the transaction
-        require(address(this).balance >= amount);
+        require(address(this).balance >= amount, "Not enough balance in the safe");
         uint txnId = txnIndex;
         Transaction storage transaction = transactions[txnId];
         txnIndex++;
@@ -133,7 +133,7 @@ contract MultiSigSafe is Ownable {
         //then we need to validate the transaction
         if (txn.signatureCount >= minSigsRequired) {
             //check balance
-            require(address(this).balance >= txn.amount);
+            require(address(this).balance >= txn.amount, "Not enough balance in the safe");
             txn.txnState = TxnState.Completed;
             (bool success, bytes memory result) = txn.to.call{value: txn.amount}("");
             require(success, "signTransaction: tx failed");

@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import Notify from "bnc-notify";
-import { BLOCKNATIVE_DAPPID } from "../constants";
+//import { BLOCKNATIVE_DAPPID } from "../constants";
 
 const { ethers } = require("ethers");
 
@@ -31,6 +31,7 @@ export default function Transactor(providerOrSigner, gasPrice, etherscan) {
       console.log("network", network);
       var options = null;
       var notify = null;
+      /*
       options = {
         dappId: BLOCKNATIVE_DAPPID, // GET YOUR OWN KEY AT https://account.blocknative.com
         system: "ethereum",
@@ -44,8 +45,9 @@ export default function Transactor(providerOrSigner, gasPrice, etherscan) {
           }
         },
       };
+      */
 
-      notify = Notify(options);
+      //notify = Notify(options);
 
       let etherscanNetwork = "";
       if (network.name && network.chainId > 1) {

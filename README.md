@@ -30,7 +30,9 @@ yarn install
 yarn chain
 ```
 
-> in a second terminal window, start the frontend:
+> 1. Create the .env file in the /packages/react-app folder. You can use the .sample.env file as a starting point. 
+> 2. Enter your INFURA ID in line 3 and uncomment it. Please leave line 1 commente out.
+> 3. in a second terminal window, start the frontend:
 
 ```bash
 cd blockchain-developer-bootcamp-final-project
@@ -56,9 +58,9 @@ yarn test
 > 3. Update the /packages/hardhat/hardhat-config.js and change the defaultNetwork to the name of the target network.
 > 4. Run the command: yarn deploy in a terminal window. 
 
-## Uodating the front-end to point to the test network:
-> 1. Create the .env file in the /packages/react-app folder. You can use the .sample.env file as a starting point.
-> 2. Enter the relevant information for the target test netowrk in .env
+## Updating the front-end to point to the test network:
+> 1. Update the .env file in the /packages/react-app folder by entering your INFURA ID in line 1 and uncommenting it.
+> 2. Make sure that REACT_APP_PROVIDER is pointing to the same test network that was used to deploy the contract(s).
 
 ## Frontend Project:
 https://developermarwan-bootcamp.surge.sh/ 
