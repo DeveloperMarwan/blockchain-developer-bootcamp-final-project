@@ -71,7 +71,10 @@ const walletLink = new WalletLink({
 });
 
 // WalletLink provider
-const walletLinkProvider = walletLink.makeWeb3Provider(`https://mainnet.infura.io/v3/` + process.env.REACT_APP_INFURAID, 1); //`https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`
+const walletLinkProvider = walletLink.makeWeb3Provider(
+  `https://mainnet.infura.io/v3/` + process.env.REACT_APP_INFURAID,
+  1,
+); //`https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`
 
 const web3Modal = new Web3Modal({
   network: "mainnet", // Optional. If using WalletConnect on xDai, change network to "xdai" and add RPC info below for xDai chain.
@@ -396,31 +399,34 @@ function App(props) {
 
   //keep track of total 'threshold' needed of ETH
   const threshold = useContractReader(readContracts, "Staker", "threshold");
-  console.log("💵 threshold:", threshold);
+  if (DEBUG) console.log("💵 threshold:", threshold);
 
   // keep track of a variable from the contract in the local React state:
   const balanceStaked = useContractReader(readContracts, "Staker", "balances", [address]);
-  console.log("💸 balanceStaked:", balanceStaked);
+  if (DEBUG) console.log("💸 balanceStaked:", balanceStaked);
 
   // keep track of a variable from the contract in the local React state:
   const timeLeft = useContractReader(readContracts, "Staker", "timeLeft");
-  console.log("⏳ timeLeft:", timeLeft);
+  if (DEBUG) console.log("⏳ timeLeft:", timeLeft);
 
   const stakingCompleted = useContractReader(readContracts, "Staker", "stakingCompleted");
-  console.log("✅ stakingCompleted:", stakingCompleted);
+  if (DEBUG) console.log("✅ stakingCompleted:", stakingCompleted);
 
   const isMultiSigSafeInit = useContractReader(readContracts, "Staker", "multiSigSafeInit");
-  console.log("✅ isMultiSigSafeInit:", isMultiSigSafeInit);
+  if (DEBUG) console.log("✅ isMultiSigSafeInit:", isMultiSigSafeInit);
 
   const multiSigSafeAddress = useContractReader(readContracts, "Staker", "multiSigSafe");
-  console.log("✅ multiSigSafeAddress:", multiSigSafeAddress);
+  if (DEBUG) console.log("✅ multiSigSafeAddress:", multiSigSafeAddress);
 
   const theExternalContract = useExternalContractLoader(injectedProvider, multiSigSafeAddress, MULTI_SIG_SAFE_ABI);
-  console.log("✅ theExternalContract: ", theExternalContract);
+  if (DEBUG) console.log("✅ theExternalContract: ", theExternalContract);
 
   //📟 Listen for broadcast events
   const stakeEvents = useEventListener(readContracts, "Staker", "Stake", localProvider, 1);
-  console.log("📟 stake events:", stakeEvents);
+  if (DEBUG) console.log("📟 stake events:", stakeEvents);
+
+  const multiSigCreatedEvents = useEventListener(readContracts, "Staker", "MultiSigSafeCreated", localProvider, 1);
+  if (DEBUG) console.log("📟 MultiSigSafeCreated events:", multiSigCreatedEvents);
 
   const [stakeAmount, setStakeAmount] = useState();
   const [staking, setStaking] = useState();
@@ -582,7 +588,26 @@ function App(props) {
                         blockExplorer={blockExplorer}
                       />{" "}
                       =&gt;
-                      <Balance balance={item[1]} />
+                      <Balance balance={item[1]} provider={localProvider} price={price} />
+                    </List.Item>
+                  );
+                }}
+              />
+            </div>
+            <div style={{ padding: 8 }}>
+              <div>Multi Sig Safe Created Events:</div>
+              <List
+                dataSource={multiSigCreatedEvents}
+                renderItem={item => {
+                  return (
+                    <List.Item key={item[0] + item.blockNumber}>
+                      Safe address:{" "}
+                      <Address
+                        value={item[0]}
+                        ensProvider={mainnetProvider}
+                        fontSize={16}
+                        blockExplorer={blockExplorer}
+                      />
                     </List.Item>
                   );
                 }}

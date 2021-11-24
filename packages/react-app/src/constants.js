@@ -1,8 +1,5 @@
 const process = require("process");
 
-// MY ETHERSCAN_ID, SWAP IN YOURS FROM https://etherscan.io/myapikey
-// export const ETHERSCAN_KEY = "R2SGDV6WNVB3Y3I2IXD4B7RYRP2D1IMU8B";
-
 export const NETWORKS = {
   localhost: {
     name: "localhost",
