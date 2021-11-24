@@ -23,7 +23,7 @@ cd blockchain-developer-bootcamp-final-project
 git checkout main
 ```
 
-> install and start the‍ Hardhat chain:
+> install and start the‍ Hardhat chain: (Please note that the chain runs on **locahost port 8545** and with **chain id: 1337**. Your MetaMask Network settings should match those values)
 
 ```bash
 yarn install
