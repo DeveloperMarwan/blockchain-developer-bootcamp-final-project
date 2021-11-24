@@ -8,8 +8,8 @@ Create a staking DAO.
 - A threshold ETH amount is set.
 - If the threshold ETH amount is not collected by the deadline, members will be allowed to withdraw funds that they put in.
 - If the threshold value of ETH is reached by the deadline, staking will be considered complete and the full balance of ETH is sent to a multi-sig safe. 
-- The multi-sig safe is created after the staking is completed. The safe is initialized with the blaance staked and the staking accounts. The required number of signatures is set to the number of owner minus one.
-- Members will be allowed to propse transactions to send ETH to an address.
+- The multi-sig safe is created after the staking is completed. The safe is initialized with the balance staked and the staking accounts. The required number of signatures is set to the number of owners minus one.
+- Members will be allowed to propose transactions to send ETH to an address.
 - If the required number of signatures o=is achieved the ETH is transfered.
 
 ## Installation and Setup:
@@ -31,7 +31,7 @@ yarn chain
 ```
 
 > 1. Create the .env file in the /packages/react-app folder. You can use the .sample.env file as a starting point. 
-> 2. Enter your INFURA ID in line 3 and uncomment it. Please leave line 1 commente out.
+> 2. Enter your INFURA ID in line 3 and uncomment it. Please leave line 1 commented out.
 > 3. in a second terminal window, start the frontend:
 
 ```bash
