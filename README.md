@@ -8,10 +8,10 @@ Create a staking DAO.
 - A threshold ETH amount is set.
 - If the threshold ETH amount is not collected by the deadline, members will be allowed to withdraw funds that they put in.
 - If the threshold value of ETH is reached by the deadline, staking will be considered complete and the full balance of ETH is sent to a multi-sig safe. 
-- The staking process is considered completed once the "execute" method on the "Staker" contract is called. This mehod can onlt be called after the deadline has passed. Please note that the time deadline is only used to allow/disallow calling the execute method. Prior to calling the execute method, users can still stake ETH even if the deadline has passed. After calling the execute method, staking will be complete.
+- The staking process is considered completed once the "execute" method on the "Staker" contract is called. This method can only be called after the deadline has passed. Please note that the time deadline is only used to allow/disallow calling the execute method. Prior to calling the execute method, users can still stake ETH even if the deadline has passed. After calling the execute method, staking will be complete.
 - The multi-sig safe is created after the staking is completed. The safe is initialized with the balance staked and the staking accounts. The required number of signatures is set to the number of owners minus one.
 - Members will be allowed to propose transactions to send ETH to an address.
-- If the required number of signatures is achieved the ETH is transfered.
+- If the required number of signatures is achieved the ETH is transferred.
 
 ## Installation and Setup:
 > Prerequisites: [Node](https://nodejs.org/en/download/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/) and [Git](https://git-scm.com/downloads)
@@ -41,7 +41,7 @@ yarn start
 ```
 
 > in a third terminal window, deploy the contract: (this will deploy to the local hardhat network). 
-> The Staker contract is setup so that you can pass in the threashold ETH amount (in WEI) and the staking perion length (in Seconds). Currenly, the deployment is set to pass 1 ETH and 60 seconds as the parameter values. You can change those values by editing the /packages/hardhat/deploy/00_deploy_your_contract.js file (line #11).
+> The Staker contract is setup so that you can pass in the threshold  ETH amount (in WEI) and the staking period length (in Seconds). Currently, the deployment is set to pass 1 ETH and 60 seconds as the parameter values. You can change those values by editing the /packages/hardhat/deploy/00_deploy_your_contract.js file (line #11).
 
 ```bash
 cd blockchain-developer-bootcamp-final-project
@@ -54,7 +54,7 @@ yarn deploy
 cd blockchain-developer-bootcamp-final-project
 yarn test
 ```
-## Deployig to a test network (eg. Ropsten, Rinkeby, etc.):
+## Deploynig to a test network (eg. Ropsten, Rinkeby, etc.):
 > 1. Create the .env file in the /packages/hardhat folder. You can use the example.env file as a starting point.
 > 2. Enter the relevant information for the target test network .env
 > 3. Update the /packages/hardhat/hardhat-config.js and change the defaultNetwork to the name of the target network.
