@@ -54,6 +54,10 @@ yarn deploy
 cd blockchain-developer-bootcamp-final-project
 yarn test
 ```
+
+## Project Video:
+> https://youtu.be/RDVC7-7_2Cg
+
 ## Deploynig to a test network (eg. Ropsten, Rinkeby, etc.):
 > 1. Create the .env file in the /packages/hardhat folder. You can use the example.env file as a starting point.
 > 2. Enter the relevant information for the target test network .env

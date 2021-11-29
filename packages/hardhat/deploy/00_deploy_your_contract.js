@@ -8,7 +8,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
   await deploy("Staker", {
     from: deployer,
-    args: [ethers.utils.parseEther("1"), 60],
+    args: [ethers.utils.parseEther("1"), 120],
     log: true,
   });
 };
