@@ -1,0 +1,5 @@
+testnet address: 0x52d4d24747e3241477DfB2Ea5364D4A99fE7A814 
+
+network: ROPSTEN
+
+Note: if you are testing using the deployed front-end at https://developermarwan-bootcamp.surge.sh/, you can stake ETH even if the time left is 0. This value only controls whether the "Execute" function can be called or not. As long it is not called, staking can take place.
